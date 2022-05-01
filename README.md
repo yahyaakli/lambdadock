@@ -1,4 +1,4 @@
-# AWS lambda docker framework
+# AWS lambda docker template
 
 This repository contains a basic template of a ubuntu docker image that could be deployed to aws lambda.
 
