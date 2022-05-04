@@ -10,8 +10,6 @@ RUN apt-get update && \
   unzip \
   libcurl4-openssl-dev
 
-RUN apt install tesseract-ocr -y
-RUN apt install libtesseract-dev -y
 RUN apt-get install python3 -y 
 RUN apt-get install python3-pip -y
 
