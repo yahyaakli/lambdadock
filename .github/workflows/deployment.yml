@@ -3,7 +3,7 @@ name: deploy
 on:
   push:
     branches:
-      - adding-workflows
+      - main
 
 env:
   AWS_REGION: 'us-east-1'
