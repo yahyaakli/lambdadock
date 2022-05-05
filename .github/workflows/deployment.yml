@@ -32,8 +32,10 @@ jobs:
         id: login-ecr        
         uses: aws-actions/amazon-ecr-login@v1            
       - name: Check out code        
-        uses: actions/checkout@v2          
+        uses: actions/checkout@v2    
+      - name: Build container image
+        run: docker build -t ${{ env.IMAGE_NAME }} .
       - name: Create docker images        
-        run: docker build -t 240833302201.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.IMAGE_NAME }}:${{ env.IMAGE_VERSION }}      
+        run: docker tag ${{ env.IMAGE_NAME }}:${{ env.IMAGE_VERSION }} ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.IMAGE_NAME }}:${{ env.IMAGE_VERSION }}      
       - name: Upload docker into ECR        
-        run: docker push 240833302201.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.IMAGE_NAME }}:${{ env.IMAGE_VERSION }}   
+        run: docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.IMAGE_NAME }}:${{ env.IMAGE_VERSION }}   
