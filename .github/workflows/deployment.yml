@@ -34,8 +34,8 @@ jobs:
       - name: Check out code        
         uses: actions/checkout@v2    
       - name: Build container image
-        run: docker build -t ${{ env.IMAGE_NAME }} .
-      - name: Create docker images        
-        run: docker tag ${{ env.IMAGE_NAME }}:${{ env.IMAGE_VERSION }} ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.IMAGE_NAME }}:${{ env.IMAGE_VERSION }}      
+        run: make build IMAGE_NAME=${{ env.IMAGE_NAME }}
+      - name: Tag docker image       
+        run: make tag IMAGE_NAME=${{ env.IMAGE_NAME }} IMAGE_VERSION=${{ env.IMAGE_VERSION }} aws_account_id=${{ secrets.AWS_ACCOUNT_ID }} AWS_REGION=${{ env.AWS_REGION }}
       - name: Upload docker into ECR        
-        run: docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.IMAGE_NAME }}:${{ env.IMAGE_VERSION }}   
+        run: make push IMAGE_NAME=${{ env.IMAGE_NAME }} IMAGE_VERSION=${{ env.IMAGE_VERSION }} aws_account_id=${{ secrets.AWS_ACCOUNT_ID }} AWS_REGION=${{ env.AWS_REGION }}
