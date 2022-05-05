@@ -4,7 +4,7 @@ This repository contains a basic template of a ubuntu docker image that could be
 
 The entrypoint uses a python script with a handler function.
 
-## Manual push your code to aws lambda
+## Manualy push your code to aws lambda
 
 1. First, if you have't already, download AWS CLI using this guide: https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
 
