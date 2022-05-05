@@ -1,0 +1,41 @@
+name: deploy
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  AWS_REGION: 'us-east-1'
+  IMAGE_NAME: 'test-image'
+  IMAGE_VERSION: 'latest'
+
+jobs:
+  continuous-deployment:    
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install AWS CLI        
+        uses: unfor19/install-aws-cli-action@v1        
+        with:          
+          version: 1        
+        env:          
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}          
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}          
+          aws-region: ${{ env.AWS_REGION }}       
+      - name: Configure AWS credentials        
+        uses: aws-actions/configure-aws-credentials@v1        
+        with:          
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}                
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}          
+          aws-region: ${{ env.AWS_REGION }}       
+      - name: Login to Amazon ECR        
+        id: login-ecr        
+        uses: aws-actions/amazon-ecr-login@v1            
+      - name: Check out code        
+        uses: actions/checkout@v2    
+      - name: Build container image
+        run: make build IMAGE_NAME=${{ env.IMAGE_NAME }}
+      - name: Tag docker image       
+        run: make tag IMAGE_NAME=${{ env.IMAGE_NAME }} IMAGE_VERSION=${{ env.IMAGE_VERSION }} aws_account_id=${{ secrets.AWS_ACCOUNT_ID }} AWS_REGION=${{ env.AWS_REGION }}
+      - name: Upload docker into ECR        
+        run: make push IMAGE_NAME=${{ env.IMAGE_NAME }} IMAGE_VERSION=${{ env.IMAGE_VERSION }} aws_account_id=${{ secrets.AWS_ACCOUNT_ID }} AWS_REGION=${{ env.AWS_REGION }}
