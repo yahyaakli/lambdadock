@@ -1,8 +1,9 @@
 name: deploy
 
 on:
-  branches:
-    - adding-workflows
+  push:
+    branches:
+      - adding-workflows
 
 jobs:
   deploy-lambda:
